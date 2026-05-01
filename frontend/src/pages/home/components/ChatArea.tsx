@@ -6,7 +6,7 @@ import type { Persona, PersonaId } from "@/mocks/chatResponses";
 
 export interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   timestamp: Date;
 }
@@ -41,8 +41,11 @@ export default function ChatArea({
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.style.height = 'auto';
-      inputRef.current.style.height = `${Math.min(inputRef.current.scrollHeight, 160)}px`;
+      inputRef.current.style.height = "auto";
+      inputRef.current.style.height = `${Math.min(
+        inputRef.current.scrollHeight,
+        160
+      )}px`;
     }
   }, [inputValue]);
 
@@ -51,14 +54,14 @@ export default function ChatArea({
     const trimmed = inputValue.trim();
     if (!trimmed || isTyping) return;
     onSendMessage(trimmed);
-    setInputValue('');
+    setInputValue("");
     if (inputRef.current) {
-      inputRef.current.style.height = 'auto';
+      inputRef.current.style.height = "auto";
     }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e as unknown as FormEvent);
     }
@@ -88,15 +91,25 @@ export default function ChatArea({
           <div className="messages-inner">
             {messages.map((msg) => (
               <div key={msg.id} className={`message-row ${msg.role}`}>
-                {msg.role === 'assistant' ? (
-                  <img className="avatar avatar-logo" src="/logo.png" alt="NexusBridge assistant" />
+                {msg.role === "assistant" ? (
+                  <img
+                    className="avatar avatar-logo"
+                    src="/logo.png"
+                    alt="NexusBridge assistant"
+                  />
                 ) : (
-                  <div className="avatar" aria-hidden="true" style={{ background: "#111827" }}>
+                  <div
+                    className="avatar"
+                    aria-hidden="true"
+                    style={{ background: "#111827" }}
+                  >
                     <UserRound size={18} />
                   </div>
                 )}
 
-                <div className={`message ${msg.role}`}>{renderContent(msg.content)}</div>
+                <div className={`message ${msg.role}`}>
+                  {renderContent(msg.content)}
+                </div>
               </div>
             ))}
 
@@ -109,9 +122,14 @@ export default function ChatArea({
         <form onSubmit={handleSubmit} className="composer">
           <div className="mode-line">
             <span className="mode-pill">
-              {ActivePersonaIcon ? <ActivePersonaIcon size={15} /> : "No"} {persona?.label ?? "specialist mode"}
+              {ActivePersonaIcon ? <ActivePersonaIcon size={15} /> : "No"}{" "}
+              {persona?.label ?? "specialist mode"}
             </span>
-            <span>{persona ? "Specialist system prompt is active." : "No specialist system prompt is active."}</span>
+            <span>
+              {persona
+                ? "Specialist system prompt is active."
+                : "No specialist system prompt is active."}
+            </span>
           </div>
           <div className="input-shell">
             <textarea
@@ -131,7 +149,14 @@ export default function ChatArea({
               <Send size={18} />
             </button>
           </div>
-          <p style={{ margin: "8px 0 0", textAlign: "center", color: "#667085", fontSize: 11 }}>
+          <p
+            style={{
+              margin: "8px 0 0",
+              textAlign: "center",
+              color: "#667085",
+              fontSize: 11,
+            }}
+          >
             AI can make mistakes. Verify important information independently.
           </p>
         </form>
