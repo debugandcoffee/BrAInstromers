@@ -1,0 +1,55 @@
+{
+  "market_slice": "ai-energy-flexibility-grid-optimization",
+  "companies": [
+    {
+      "name": "Schneider Electric",
+      "website": "https://www.se.com",
+      "why": "Energy management, automation, industrial efficiency, and grid-edge software."
+    },
+    {
+      "name": "Siemens",
+      "website": "https://www.siemens.com",
+      "why": "Industrial automation, smart infrastructure, grid software, and digital twins."
+    },
+    {
+      "name": "ABB",
+      "website": "https://global.abb",
+      "why": "Electrification, automation, industrial energy optimization, and grid technologies."
+    },
+    {
+      "name": "Hitachi Energy",
+      "website": "https://www.hitachienergy.com",
+      "why": "Grid infrastructure, power systems, grid automation, and energy transition technology."
+    },
+    {
+      "name": "GE Vernova",
+      "website": "https://www.gevernova.com",
+      "why": "Grid software, electrification, power generation, and energy transition portfolio."
+    },
+    {
+      "name": "C3 AI",
+      "website": "https://c3.ai",
+      "why": "Enterprise AI software with energy, utilities, manufacturing, and asset optimization use cases."
+    },
+    {
+      "name": "GridBeyond",
+      "website": "https://gridbeyond.com",
+      "why": "Demand response, energy flexibility, distributed energy resources, and optimization."
+    },
+    {
+      "name": "AutoGrid",
+      "website": "https://www.auto-grid.com",
+      "why": "Virtual power plants, demand response, and distributed energy resource management."
+    },
+    {
+      "name": "Stem",
+      "website": "https://www.stem.com",
+      "why": "AI-driven battery storage and energy optimization."
+    },
+    {
+      "name": "Octopus Energy",
+      "website": "https://octopus.energy",
+      "why": "Energy retail, flexibility, smart tariffs, and technology platform."
+    }
+  ]
+}

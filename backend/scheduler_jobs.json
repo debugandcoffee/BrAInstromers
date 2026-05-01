@@ -1,0 +1,109 @@
+{
+  "poll_seconds": 300,
+  "jobs": [
+    {
+      "id": "arxiv-ai-energy-grid-daily",
+      "source": "arxiv",
+      "query": "artificial intelligence energy flexibility grid optimization",
+      "max_results": 25,
+      "refresh_hours": 24,
+      "enabled": true
+    },
+    {
+      "id": "arxiv-demand-response-daily",
+      "source": "arxiv",
+      "query": "machine learning demand response energy systems",
+      "max_results": 25,
+      "refresh_hours": 24,
+      "enabled": true
+    },
+    {
+      "id": "eu-funding-ai-energy-daily",
+      "source": "eu_funding",
+      "query": "artificial intelligence energy grid innovation",
+      "max_results": 25,
+      "refresh_hours": 24,
+      "enabled": true
+    },
+    {
+      "id": "eu-funding-energy-flexibility-daily",
+      "source": "eu_funding",
+      "query": "energy flexibility data driven decision making",
+      "max_results": 25,
+      "refresh_hours": 24,
+      "enabled": true
+    },
+    {
+      "id": "wikidata-schneider-electric-weekly",
+      "source": "wikidata",
+      "query": "Schneider Electric",
+      "max_results": 1,
+      "refresh_hours": 168,
+      "enabled": true
+    },
+    {
+      "id": "wikidata-siemens-weekly",
+      "source": "wikidata",
+      "query": "Siemens",
+      "max_results": 1,
+      "refresh_hours": 168,
+      "enabled": true
+    },
+    {
+      "id": "wikidata-abb-weekly",
+      "source": "wikidata",
+      "query": "ABB",
+      "max_results": 1,
+      "refresh_hours": 168,
+      "enabled": true
+    },
+    {
+      "id": "wikidata-hitachi-energy-weekly",
+      "source": "wikidata",
+      "query": "Hitachi Energy",
+      "max_results": 1,
+      "refresh_hours": 168,
+      "enabled": true
+    },
+    {
+      "id": "company-schneider-electric-weekly",
+      "source": "company",
+      "query": "https://www.se.com",
+      "max_results": 1,
+      "refresh_hours": 168,
+      "enabled": true
+    },
+    {
+      "id": "company-siemens-weekly",
+      "source": "company",
+      "query": "https://www.siemens.com",
+      "max_results": 1,
+      "refresh_hours": 168,
+      "enabled": true
+    },
+    {
+      "id": "company-abb-weekly",
+      "source": "company",
+      "query": "https://global.abb",
+      "max_results": 1,
+      "refresh_hours": 168,
+      "enabled": true
+    },
+    {
+      "id": "company-hitachi-energy-weekly",
+      "source": "company",
+      "query": "https://www.hitachienergy.com",
+      "max_results": 1,
+      "refresh_hours": 168,
+      "enabled": true
+    },
+    {
+      "id": "company-gridbeyond-weekly",
+      "source": "company",
+      "query": "https://gridbeyond.com",
+      "max_results": 1,
+      "refresh_hours": 168,
+      "enabled": true
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "jobs": {
+    "arxiv-ai-business-daily": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T10:35:38.407440+00:00",
+      "last_result": {
+        "changed": 25,
+        "seen": 25,
+        "source": "arxiv"
+      },
+      "last_started_at": "2026-05-01T10:35:36.295451+00:00",
+      "last_success_at": "2026-05-01T10:35:38.407440+00:00"
+    },
+    "arxiv-ai-energy-grid-daily": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:53:55.253665+00:00",
+      "last_result": {
+        "changed": 12,
+        "seen": 25,
+        "source": "arxiv"
+      },
+      "last_started_at": "2026-05-01T11:53:53.133502+00:00",
+      "last_success_at": "2026-05-01T11:53:55.253665+00:00"
+    },
+    "arxiv-demand-response-daily": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:53:57.050875+00:00",
+      "last_result": {
+        "changed": 10,
+        "seen": 25,
+        "source": "arxiv"
+      },
+      "last_started_at": "2026-05-01T11:53:55.253665+00:00",
+      "last_success_at": "2026-05-01T11:53:57.050875+00:00"
+    },
+    "company-abb-weekly": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:54:53.146638+00:00",
+      "last_result": {
+        "changed": 1,
+        "seen": 1,
+        "source": "company"
+      },
+      "last_started_at": "2026-05-01T11:54:51.342440+00:00",
+      "last_success_at": "2026-05-01T11:54:53.146638+00:00"
+    },
+    "company-gridbeyond-weekly": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:55:26.544351+00:00",
+      "last_result": {
+        "changed": 1,
+        "seen": 1,
+        "source": "company"
+      },
+      "last_started_at": "2026-05-01T11:55:12.633975+00:00",
+      "last_success_at": "2026-05-01T11:55:26.544351+00:00"
+    },
+    "company-hitachi-energy-weekly": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:55:12.633975+00:00",
+      "last_result": {
+        "changed": 1,
+        "seen": 1,
+        "source": "company"
+      },
+      "last_started_at": "2026-05-01T11:54:53.148527+00:00",
+      "last_success_at": "2026-05-01T11:55:12.633975+00:00"
+    },
+    "company-schneider-electric-weekly": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:54:15.396668+00:00",
+      "last_result": {
+        "changed": 1,
+        "seen": 1,
+        "source": "company"
+      },
+      "last_started_at": "2026-05-01T11:54:04.782495+00:00",
+      "last_success_at": "2026-05-01T11:54:15.396668+00:00"
+    },
+    "company-siemens-weekly": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:54:51.341344+00:00",
+      "last_result": {
+        "changed": 1,
+        "seen": 1,
+        "source": "company"
+      },
+      "last_started_at": "2026-05-01T11:54:15.396668+00:00",
+      "last_success_at": "2026-05-01T11:54:51.341344+00:00"
+    },
+    "eu-funding-ai-daily": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T10:35:39.651520+00:00",
+      "last_result": {
+        "changed": 25,
+        "seen": 25,
+        "source": "eu_funding"
+      },
+      "last_started_at": "2026-05-01T10:35:38.407440+00:00",
+      "last_success_at": "2026-05-01T10:35:39.651520+00:00"
+    },
+    "eu-funding-ai-energy-daily": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:53:57.940323+00:00",
+      "last_result": {
+        "changed": 4,
+        "seen": 25,
+        "source": "eu_funding"
+      },
+      "last_started_at": "2026-05-01T11:53:57.052337+00:00",
+      "last_success_at": "2026-05-01T11:53:57.940323+00:00"
+    },
+    "eu-funding-energy-flexibility-daily": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:53:58.768313+00:00",
+      "last_result": {
+        "changed": 15,
+        "seen": 25,
+        "source": "eu_funding"
+      },
+      "last_started_at": "2026-05-01T11:53:57.940323+00:00",
+      "last_success_at": "2026-05-01T11:53:58.768313+00:00"
+    },
+    "wikidata-abb-weekly": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:54:03.787379+00:00",
+      "last_result": {
+        "changed": 3,
+        "seen": 3,
+        "source": "wikidata"
+      },
+      "last_started_at": "2026-05-01T11:54:01.649769+00:00",
+      "last_success_at": "2026-05-01T11:54:03.787379+00:00"
+    },
+    "wikidata-hitachi-energy-weekly": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:54:04.781519+00:00",
+      "last_result": {
+        "changed": 3,
+        "seen": 3,
+        "source": "wikidata"
+      },
+      "last_started_at": "2026-05-01T11:54:03.787379+00:00",
+      "last_success_at": "2026-05-01T11:54:04.781519+00:00"
+    },
+    "wikidata-openai-weekly": {
+      "last_error": "HTTPSConnectionPool(host='query.wikidata.org', port=443): Read timed out. (read timeout=30)",
+      "last_finished_at": "2026-05-01T10:36:10.140794+00:00",
+      "last_started_at": "2026-05-01T10:35:39.654882+00:00"
+    },
+    "wikidata-schneider-electric-weekly": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:53:59.845593+00:00",
+      "last_result": {
+        "changed": 3,
+        "seen": 3,
+        "source": "wikidata"
+      },
+      "last_started_at": "2026-05-01T11:53:58.771264+00:00",
+      "last_success_at": "2026-05-01T11:53:59.845593+00:00"
+    },
+    "wikidata-siemens-weekly": {
+      "last_error": null,
+      "last_finished_at": "2026-05-01T11:54:01.649769+00:00",
+      "last_result": {
+        "changed": 3,
+        "seen": 3,
+        "source": "wikidata"
+      },
+      "last_started_at": "2026-05-01T11:53:59.850694+00:00",
+      "last_success_at": "2026-05-01T11:54:01.649769+00:00"
+    }
+  }
+}

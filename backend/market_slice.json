@@ -1,0 +1,31 @@
+{
+  "id": "ai-energy-flexibility-grid-optimization",
+  "name": "AI for energy flexibility, grid optimization, and industrial energy efficiency",
+  "why_this_slice": [
+    "The EU Funding data already returns many energy-grid and industrial decarbonization calls, so grants are available for this domain.",
+    "The business buyer is concrete: utilities, grid operators, manufacturers, energy retailers, industrial sites, and property portfolios.",
+    "The investor story is focused: software, data, grid flexibility, storage, demand response, and industrial optimization are easier to compare than a broad AI market.",
+    "The researcher story is natural: forecasting, optimization, control systems, digital twins, computer vision for assets, and trustworthy AI can become pilots."
+  ],
+  "core_queries": {
+    "arxiv": [
+      "artificial intelligence energy flexibility grid optimization",
+      "machine learning demand response energy systems",
+      "reinforcement learning smart grid energy management"
+    ],
+    "eu_funding": [
+      "artificial intelligence energy grid innovation",
+      "energy flexibility data driven decision making",
+      "industrial energy efficiency digital technologies"
+    ]
+  },
+  "buyer_segments": [
+    "distribution system operators",
+    "transmission system operators",
+    "energy retailers and aggregators",
+    "industrial manufacturers",
+    "commercial real estate energy managers",
+    "battery storage operators",
+    "renewable energy asset operators"
+  ]
+}
