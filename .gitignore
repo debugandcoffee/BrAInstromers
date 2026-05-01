@@ -1,0 +1,133 @@
+# ============================================================================
+# Frontend (Node.js / React / Vite)
+# ============================================================================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+frontend/*.pem
+
+# ============================================================================
+# Backend (Python)
+# ============================================================================
+backend/.env
+backend/.env.local
+backend/.venv/
+backend/venv/
+backend/env/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/**/*.pyo
+backend/**/*.pyd
+backend/.Python
+backend/build/
+backend/develop-eggs/
+backend/dist/
+backend/downloads/
+backend/eggs/
+backend/.eggs/
+backend/lib/
+backend/lib64/
+backend/parts/
+backend/sdist/
+backend/var/
+backend/wheels/
+backend/*.egg-info/
+backend/.installed.cfg
+backend/*.egg
+backend/MANIFEST
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+backend/.mypy_cache/
+backend/.dmypy.json
+backend/dmypy.json
+
+# Database and cache files
+backend/data/*.sqlite3
+backend/data/*.sqlite
+backend/data/*.db
+backend/*.db
+
+# ============================================================================
+# IDE and Editor files
+# ============================================================================
+.vscode/
+.idea/
+.DS_Store
+.AppleDouble
+.LSOverride
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+.classpath
+.c9/
+*.launch
+.tern-port
+.history
+.ionide
+
+# ============================================================================
+# Build and Dependencies
+# ============================================================================
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# ============================================================================
+# Logs
+# ============================================================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ============================================================================
+# OS specific files
+# ============================================================================
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+desktop.ini
+
+# ============================================================================
+# Temporary files
+# ============================================================================
+*.tmp
+*.temp
+.cache/
+
+# ============================================================================
+# Environment and Configuration
+# ============================================================================
+.env
+.env.local
+.env.*.local
+.env.*.local.js
+.env.production.local
+
+# ============================================================================
+# Runtime Data
+# ============================================================================
+pids
+*.pid
+*.seed
+*.pid.lock
+

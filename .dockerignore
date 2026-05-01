@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.DS_Store
+npm-debug.log
+backend/data
+backend/.venv
+__pycache__
+*.pyc
+tsconfig.tsbuildinfo
+.venv
+.env
+.gitignore
