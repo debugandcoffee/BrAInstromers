@@ -8,9 +8,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from BrAInstromers.backend.app.cli import build_adapter
-from BrAInstromers.backend.app.config import settings
-from BrAInstromers.backend.app.storage.document_store import DocumentStore
+from app.cli import build_adapter
+from app.config import settings
+from app.storage.document_store import DocumentStore
 
 
 SOURCE_TO_COMMAND = {

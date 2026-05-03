@@ -5,10 +5,10 @@ from datetime import datetime, timezone
 
 import requests
 
-from BrAInstromers.backend.app.config import settings
-from BrAInstromers.backend.app.ingestion.chunking import chunk_text
-from BrAInstromers.backend.app.models import RawDocument
-from BrAInstromers.backend.app.storage.document_store import DocumentStore
+from app.config import settings
+from app.ingestion.chunking import chunk_text
+from app.models import RawDocument
+from app.storage.document_store import DocumentStore
 
 
 class SourceAdapter(ABC):

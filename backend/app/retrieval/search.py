@@ -5,9 +5,9 @@ import math
 from dataclasses import dataclass
 from typing import Any
 
-from BrAInstromers.backend.app.config import settings
-from BrAInstromers.backend.app.retrieval.embeddings import EmbeddingModel
-from BrAInstromers.backend.app.storage.document_store import DocumentStore
+from app.config import settings
+from app.retrieval.embeddings import EmbeddingModel
+from app.storage.document_store import DocumentStore
 
 
 @dataclass(frozen=True)

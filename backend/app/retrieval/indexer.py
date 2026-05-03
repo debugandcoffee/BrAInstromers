@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from BrAInstromers.backend.app.config import settings
-from BrAInstromers.backend.app.retrieval.embeddings import EmbeddingModel
-from BrAInstromers.backend.app.storage.document_store import DocumentStore
+from app.config import settings
+from app.retrieval.embeddings import EmbeddingModel
+from app.storage.document_store import DocumentStore
 
 
 def build_lexical_index(store: DocumentStore) -> int:
@@ -24,7 +24,7 @@ def build_semantic_index(
             break
 
         for start in range(0, len(rows), batch_size):
-            batch = rows[start : start + batch_size]
+            batch = rows[start: start + batch_size]
             vectors = embedder.encode_passages([row["text"] for row in batch])
             for row, vector in zip(batch, vectors):
                 store.upsert_embedding(int(row["id"]), model_name, vector)
@@ -34,3 +34,13 @@ def build_semantic_index(
             break
 
     return {"model": model_name, "indexed": indexed}
+
+
+def run_indexing(store: DocumentStore) -> dict:
+    lexical = build_lexical_index(store)
+    semantic = build_semantic_index(store)
+
+    return {
+        "lexical": lexical,
+        "semantic": semantic,
+    }

@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterator
 
-from BrAInstromers.backend.app.models import RawDocument
+from app.models import RawDocument
 
 
 SCHEMA = """

@@ -4,9 +4,9 @@ import html
 import urllib.parse
 import xml.etree.ElementTree as ET
 
-from BrAInstromers.backend.app.ingestion.base import SourceAdapter
-from BrAInstromers.backend.app.ingestion.chunking import clean_text
-from BrAInstromers.backend.app.models import RawDocument
+from app.ingestion.base import SourceAdapter
+from app.ingestion.chunking import clean_text
+from app.models import RawDocument
 
 
 ATOM_NS = {"atom": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
