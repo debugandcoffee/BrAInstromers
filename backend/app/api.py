@@ -1,38 +1,65 @@
 from fastapi import APIRouter, HTTPException
+from threading import Lock
 
 from app.storage.document_store import DocumentStore
 from app.retrieval.search import Retriever
 from app.retrieval.rag_engine import RAGEngine
+from app.agents.rag_agent import AgenticRAG
 from app.config import settings
 
 router = APIRouter()
 
 _store = None
 _retriever = None
-_rag = None
+_rag_engine = None
+_agent = None
+_init_lock = Lock()
 
 
-def get_rag():
-    global _store, _retriever, _rag
+def get_agent():
+    global _store, _retriever, _rag_engine, _agent
 
-    if _rag is None:
+    if _agent is not None:
+        return _agent
+
+    with _init_lock:
+        if _agent is not None:
+            return _agent
+
         try:
             _store = DocumentStore(settings.document_db_path)
             _retriever = Retriever(_store)
-            _rag = RAGEngine(_retriever)
-        except Exception as e:
-            raise RuntimeError(f"RAG init failed: {e}")
+            _rag_engine = RAGEngine(_retriever)
+            _agent = AgenticRAG(_rag_engine)
 
-    return _rag
+        except Exception as e:
+            raise RuntimeError(f"RAG system initialization failed: {e}")
+
+    return _agent
 
 
 @router.get("/search")
 def search(q: str):
-    if not q:
-        raise HTTPException(status_code=400, detail="Query cannot be empty")
+    if not q or not q.strip():
+        raise HTTPException(
+            status_code=400,
+            detail="Query cannot be empty"
+        )
 
-    rag = get_rag()
-    return rag.query(q)
+    agent = get_agent()
+
+    try:
+        result = agent.query(q)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"RAG processing failed: {str(e)}"
+        )
+
+    return {
+        "query": q,
+        "result": result
+    }
 
 
 @router.get("/health")
