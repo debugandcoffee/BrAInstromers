@@ -4,8 +4,8 @@ import argparse
 import json
 import sys
 
-from BrAInstromers.backend.app.config import settings
-from BrAInstromers.backend.app.storage.document_store import DocumentStore
+from app.config import settings
+from app.storage.document_store import DocumentStore
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -71,19 +71,19 @@ def main() -> None:
         return
 
     if args.command == "build-lexical-index":
-        from BrAInstromers.backend.app.retrieval.indexer import build_lexical_index
+        from app.retrieval.indexer import build_lexical_index
 
         print(json.dumps({"indexed": build_lexical_index(store)}, indent=2))
         return
 
     if args.command == "build-semantic-index":
-        from BrAInstromers.backend.app.retrieval.indexer import build_semantic_index
+        from app.retrieval.indexer import build_semantic_index
 
         print(json.dumps(build_semantic_index(store, model_name=args.model, batch_size=args.batch_size), indent=2))
         return
 
     if args.command == "search":
-        from BrAInstromers.backend.app.retrieval.search import Retriever
+        from app.retrieval.search import Retriever
 
         retriever = Retriever(store, model_name=args.model)
         if args.mode == "lexical":
@@ -104,23 +104,23 @@ def main() -> None:
 
 def build_adapter(command: str, store: DocumentStore):
     if command == "ingest-arxiv":
-        from BrAInstromers.backend.app.ingestion.arxiv import ArxivAdapter
+        from app.ingestion.arxiv import ArxivAdapter
 
         return ArxivAdapter(store)
     if command == "ingest-wikidata":
-        from BrAInstromers.backend.app.ingestion.wikidata import WikidataAdapter
+        from app.ingestion.wikidata import WikidataAdapter
 
         return WikidataAdapter(store)
     if command == "ingest-ops":
-        from BrAInstromers.backend.app.ingestion.ops import OPSAdapter
+        from app.ingestion.ops import OPSAdapter
 
         return OPSAdapter(store)
     if command == "ingest-eu-funding":
-        from BrAInstromers.backend.app.ingestion.eu_funding import EUFundingAdapter
+        from app.ingestion.eu_funding import EUFundingAdapter
 
         return EUFundingAdapter(store)
     if command == "ingest-company":
-        from BrAInstromers.backend.app.ingestion.company_scraper import CompanyScraperAdapter
+        from app.ingestion.company_scraper import CompanyScraperAdapter
 
         return CompanyScraperAdapter(store)
     raise ValueError(f"Unknown command: {command}")

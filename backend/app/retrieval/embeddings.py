@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 
-from BrAInstromers.backend.app.config import settings
+from app.config import settings
 
 
 class EmbeddingModel:

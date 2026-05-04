@@ -3,10 +3,10 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from BrAInstromers.backend.app.config import settings
-from BrAInstromers.backend.app.ingestion.base import SourceAdapter
-from BrAInstromers.backend.app.ingestion.chunking import clean_text
-from BrAInstromers.backend.app.models import RawDocument
+from app.config import settings
+from app.ingestion.base import SourceAdapter
+from app.ingestion.chunking import clean_text
+from app.models import RawDocument
 
 
 class EUFundingAdapter(SourceAdapter):

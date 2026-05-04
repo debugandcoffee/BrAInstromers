@@ -11,5 +11,7 @@ services:
     volumes:
       - ./backend/data:/app/backend/data
       - ./backend/scheduler_jobs.json:/app/backend/scheduler_jobs.json
+    ports:
+      - "8000:8000"
     profiles:
       - backend
