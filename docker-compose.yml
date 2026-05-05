@@ -1,9 +1,8 @@
+networks:
+  default:
+    name: brainstromers-net
+
 services:
-  frontend:
-    build: ./frontend
-    ports:
-      - "8080:80"
-    restart: unless-stopped
   backend:
     build: ./backend
     env_file:
@@ -13,5 +12,8 @@ services:
       - ./backend/scheduler_jobs.json:/app/backend/scheduler_jobs.json
     ports:
       - "8000:8000"
-    profiles:
-      - backend
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
