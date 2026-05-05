@@ -37,6 +37,21 @@ def get_agent():
 
     return _agent
 
+def get_rag():
+    global _store, _retriever, _rag_engine
+
+
+    with _init_lock:
+        try:
+            _store = DocumentStore(settings.document_db_path)
+            _retriever = Retriever(_store)
+            _rag_engine = RAGEngine(_retriever)
+
+        except Exception as e:
+            raise RuntimeError(f"RAG system initialization failed: {e}")
+
+    return _rag_engine
+
 
 @router.get("/search")
 def search(q: str):
@@ -46,10 +61,11 @@ def search(q: str):
             detail="Query cannot be empty"
         )
 
-    agent = get_agent()
+    #agent = get_agent()
+    rag = get_rag()
 
     try:
-        result = agent.query(q)
+        result = rag.query(q)
     except Exception as e:
         raise HTTPException(
             status_code=500,

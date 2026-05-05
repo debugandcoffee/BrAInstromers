@@ -1,7 +1,11 @@
 from openai import OpenAI
 from app.retrieval.search import Retriever
+from app.config import settings
 
-client = OpenAI()
+client = OpenAI(
+    api_key=settings.openai_api_key,
+    base_url="https://api.groq.com/openai/v1"
+)
 
 
 class RAGEngine:
@@ -60,7 +64,7 @@ class RAGEngine:
         prompt = self.build_prompt(user_query, results)
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="llama-3.1-8b-instant",
             messages=[
                 {
                     "role": "system",
