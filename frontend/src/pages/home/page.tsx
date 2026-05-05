@@ -2,8 +2,8 @@ import { useCallback, useMemo, useState } from "react";
 import { Menu } from "lucide-react";
 import Sidebar from "./components/Sidebar";
 import ChatArea from "./components/ChatArea";
-import { DEFAULT_SYSTEM_NOTE, MOCK_RESPONSES, PERSONAS } from "@/mocks/chatResponses";
 import type { PersonaId } from "@/mocks/chatResponses";
+import { PERSONAS } from "@/mocks/chatResponses";
 import type { Message } from "./components/ChatArea";
 
 let messageCounter = 0;
@@ -13,15 +13,16 @@ function generateId(): string {
   return `msg_${messageCounter}_${Date.now()}`;
 }
 
-function getMockResponse(personaId: PersonaId | null): string {
-  const responses = personaId ? MOCK_RESPONSES[personaId] : null;
-  if (responses && responses.length > 0) {
-    const idx = Math.floor(Math.random() * responses.length);
-    return responses[idx];
+async function getResponse(message: string) {
+  const res = await fetch(
+    "http://localhost:8000/search?q=" + encodeURIComponent(message)
+  );
+
+  if (!res.ok) {
+    throw new Error("Backend request failed");
   }
-  const defaults = MOCK_RESPONSES.default;
-  const idx = Math.floor(Math.random() * defaults.length);
-  return defaults[idx];
+
+  return res.json();
 }
 
 export default function Home() {
@@ -43,55 +44,58 @@ export default function Home() {
     setCurrentPersona(null);
   }, []);
 
-  const handleSendMessage = useCallback(
-    (text: string) => {
-      const userMessage: Message = {
-        id: generateId(),
-        role: 'user',
-        content: text,
-        timestamp: new Date(),
-      };
+  const handleSendMessage = useCallback(async (text: string) => {
+    const userMessage: Message = {
+      id: generateId(),
+      role: "user",
+      content: text,
+      timestamp: new Date(),
+    };
 
-      setMessages((prev) => [...prev, userMessage]);
-      setIsTyping(true);
+    setMessages((prev) => [...prev, userMessage]);
+    setIsTyping(true);
 
-      const delay = 650 + Math.random() * 650;
-
-      setTimeout(() => {
-        const systemContext = persona?.systemPrompt ?? DEFAULT_SYSTEM_NOTE;
-        const response = `${getMockResponse(currentPersona)}\n\n**Active system context**\n${systemContext}`;
-        const assistantMessage: Message = {
-          id: generateId(),
-          role: 'assistant',
-          content: response,
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, assistantMessage]);
-        setIsTyping(false);
-      }, delay);
-    },
-    [currentPersona, persona]
-  );
-
-  const handleSelectPersona = useCallback(
-    (personaId: PersonaId) => {
-      setCurrentPersona(personaId);
-      const selectedPersona = PERSONAS.find((p) => p.id === personaId);
-      if (!selectedPersona) return;
-
-      const greeting = `**${selectedPersona.label} mode is active.**\n\n${selectedPersona.description}\n\nSystem prompt applied:\n${selectedPersona.systemPrompt}`;
+    try {
+      const data = await getResponse(text);
 
       const assistantMessage: Message = {
         id: generateId(),
-        role: 'assistant',
-        content: greeting,
+        role: "assistant",
+        content: data.result?.answer ?? "No response",
         timestamp: new Date(),
       };
 
-      setMessages([assistantMessage]);
-    },
-    []
-  );
+      setMessages((prev) => [...prev, assistantMessage]);
+    } catch (err) {
+      const errorMessage: Message = {
+        id: generateId(),
+        role: "assistant",
+        content: "Backend error (RAG failed).",
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
+  }, []);
+
+  const handleSelectPersona = useCallback((personaId: PersonaId) => {
+    setCurrentPersona(personaId);
+    const selectedPersona = PERSONAS.find((p) => p.id === personaId);
+    if (!selectedPersona) return;
+
+    const greeting = `**${selectedPersona.label} mode is active.**\n\n${selectedPersona.description}\n\nSystem prompt applied:\n${selectedPersona.systemPrompt}`;
+
+    const assistantMessage: Message = {
+      id: generateId(),
+      role: "assistant",
+      content: greeting,
+      timestamp: new Date(),
+    };
+
+    setMessages([assistantMessage]);
+  }, []);
 
   return (
     <div className="app-shell">

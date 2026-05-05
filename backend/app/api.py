@@ -61,11 +61,11 @@ def search(q: str):
             detail="Query cannot be empty"
         )
 
-    #agent = get_agent()
-    rag = get_rag()
+    agent = get_agent()
+    # rag = get_rag()
 
     try:
-        result = rag.query(q)
+        result = agent.query(q)
     except Exception as e:
         raise HTTPException(
             status_code=500,
