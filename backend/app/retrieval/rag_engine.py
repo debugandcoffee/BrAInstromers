@@ -1,6 +1,8 @@
 from openai import OpenAI
 from app.retrieval.search import Retriever
 from app.config import settings
+from app.storage.document_store import DocumentStore
+from app.retrieval.enhanced_search import EnhancedRetriever
 
 client = OpenAI(
     api_key=settings.openai_api_key,
@@ -44,7 +46,9 @@ class RAGEngine:
             """.strip()
 
     def query(self, user_query: str):
-        results = self.retriever.hybrid(user_query, top_n=8)
+        # Use new methods with knowledge graph:
+        results = self.retriever.hybrid_with_kg(user_query, top_n=8)
+        # results = self.retriever.hybrid(user_query, top_n=8)
 
         if not results:
             return {
