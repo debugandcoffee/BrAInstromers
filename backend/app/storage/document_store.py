@@ -53,8 +53,7 @@ CREATE VIRTUAL TABLE IF NOT EXISTS chunk_fts USING fts5(
   text,
   title,
   source,
-  content='chunks',
-  content_rowid='id',
+  content='',
   tokenize='unicode61 remove_diacritics 2'
 );
 
@@ -152,12 +151,12 @@ class DocumentStore:
 
     def replace_chunks(self, document_id: int, chunks: list[tuple[str, dict]]) -> None:
         with self.connect() as connection:
-            # existing = connection.execute(
-            #     "SELECT id FROM chunks WHERE document_id = ?",
-            #     (document_id,),
-            # ).fetchall()
-            # for row in existing:
-            #     connection.execute("DELETE FROM chunk_fts WHERE rowid = ?", (row["id"],))
+            existing = connection.execute(
+                "SELECT id FROM chunks WHERE document_id = ?",
+                (document_id,),
+            ).fetchall()
+            for row in existing:
+                connection.execute("DELETE FROM chunk_fts WHERE rowid = ?", (row["id"],))
             connection.execute("DELETE FROM chunks WHERE document_id = ?", (document_id,))
             for index, (text, metadata) in enumerate(chunks):
                 cursor = connection.execute(
@@ -173,16 +172,16 @@ class DocumentStore:
                         max(1, len(text) // 4),
                     ),
                 )
-                # chunk_id = int(cursor.lastrowid)
-                # connection.execute(
-                #     "INSERT INTO chunk_fts(rowid, text, title, source) VALUES (?, ?, ?, ?)",
-                #     (
-                #         chunk_id,
-                #         text,
-                #         str(metadata.get("title", "")),
-                #         str(metadata.get("source", "")),
-                #     ),
-                # )
+                chunk_id = int(cursor.lastrowid)
+                connection.execute(
+                    "INSERT INTO chunk_fts(rowid, text, title, source) VALUES (?, ?, ?, ?)",
+                    (
+                        chunk_id,
+                        text,
+                        str(metadata.get("title", "")),
+                        str(metadata.get("source", "")),
+                    ),
+                )
 
     def record_run(
         self,
@@ -327,7 +326,7 @@ class DocumentStore:
                 SELECT chunks.id AS chunk_id, chunks.text, chunks.chunk_index,
                        documents.id AS document_id, documents.source, documents.title,
                        documents.url, documents.external_id,
-                       bm25(chunk_fts, 1.0, 1.0, 1.0) AS lexical_score
+                       bm25(chunk_fts) AS lexical_score
                 FROM chunk_fts
                 JOIN chunks ON chunks.id = chunk_fts.rowid
                 JOIN documents ON documents.id = chunks.document_id
@@ -339,23 +338,23 @@ class DocumentStore:
             ).fetchall()
         return [dict(row) for row in rows]
 
-    # def rebuild_fts(self) -> int:
-    #     self.init_db()
-    #     with self.connect() as connection:
-    #         connection.execute("DELETE FROM chunk_fts")
-    #         rows = connection.execute(
-    #             """
-    #             SELECT chunks.id, chunks.text, documents.title, documents.source
-    #             FROM chunks
-    #             JOIN documents ON documents.id = chunks.document_id
-    #             """
-    #         ).fetchall()
-    #         for row in rows:
-    #             connection.execute(
-    #                 "INSERT INTO chunk_fts(rowid, text, title, source) VALUES (?, ?, ?, ?)",
-    #                 (row["id"], row["text"], row["title"], row["source"]),
-    #             )
-    #     return len(rows)
+    def rebuild_fts(self) -> int:
+        self.init_db()
+        with self.connect() as connection:
+            connection.execute("DELETE FROM chunk_fts")
+            rows = connection.execute(
+                """
+                SELECT chunks.id, chunks.text, documents.title, documents.source
+                FROM chunks
+                JOIN documents ON documents.id = chunks.document_id
+                """
+            ).fetchall()
+            for row in rows:
+                connection.execute(
+                    "INSERT INTO chunk_fts(rowid, text, title, source) VALUES (?, ?, ?, ?)",
+                    (row["id"], row["text"], row["title"], row["source"]),
+                )
+        return len(rows)
 
     @staticmethod
     def _fts_query(query: str) -> str:
