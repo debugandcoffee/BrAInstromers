@@ -42,7 +42,6 @@ _init_lock = Lock()
 def get_rag():
     global _store, _retriever, _rag_engine
 
-
     with _init_lock:
         try:
             _store = DocumentStore(settings.document_db_path)
@@ -56,7 +55,7 @@ def get_rag():
 
 
 @router.get("/search")
-def search(q: str):
+def search(q: str, persona: str = "general"):
     if not q or not q.strip():
         raise HTTPException(
             status_code=400,
@@ -66,7 +65,7 @@ def search(q: str):
     rag = get_rag()
 
     try:
-        result = rag.query(q)
+        result = rag.query(q, persona=persona)
     except Exception as e:
         raise HTTPException(
             status_code=500,
