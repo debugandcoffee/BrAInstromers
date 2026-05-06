@@ -27,6 +27,7 @@ class Settings:
         "https://api.tech.ec.europa.eu/search-api/prod/rest/search",
     )
     embedding_model: str = os.getenv("EMBEDDING_MODEL", "intfloat/multilingual-e5-small")
+    reranker_model: str = os.getenv("RERANKER_MODEL", "cross-encoder/ms-marco-MiniLM-L-6-v2")
     user_agent: str = os.getenv(
         "NEXUSBRIDGE_USER_AGENT",
         "NexusBridge/0.1 data-prep; contact=local-development",
