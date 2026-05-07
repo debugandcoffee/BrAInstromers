@@ -22,3 +22,18 @@ class EmbeddingModel:
 
     def encode_query(self, query: str) -> list[float]:
         return self.model.encode([f"query: {query}"], normalize_embeddings=True)[0].tolist()
+
+
+class RerankerModel:
+    def __init__(self, model_name: str = settings.reranker_model):
+        try:
+            from sentence_transformers import CrossEncoder
+        except ImportError as exc:
+            raise RuntimeError("Install retrieval dependencies first: pip install -r requirements.txt") from exc
+
+        self.model = CrossEncoder(model_name)
+
+    def rerank(self, query: str, passages: list[str]) -> list[float]:
+        pairs = [[query, passage] for passage in passages]
+        scores = self.model.predict(pairs)
+        return scores.tolist()

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from app.config import settings
-from app.retrieval.embeddings import EmbeddingModel
+from app.retrieval.embeddings import EmbeddingModel, RerankerModel
 from app.storage.document_store import DocumentStore
 
 
@@ -44,6 +44,7 @@ class Retriever:
     def __init__(self, store: DocumentStore, model_name: str = settings.embedding_model):
         self.store = store
         self.model_name = model_name
+        self.reranker = RerankerModel()
 
     def lexical(self, query: str, top_n: int = 10, candidate_n: int = 50) -> list[SearchResult]:
         rows = self.store.lexical_search(query, limit=max(top_n, candidate_n))
@@ -110,6 +111,30 @@ class Retriever:
                     lexical_score=lexical_score,
                 )
             )
+
+        # Rerank top candidates
+        if len(results) > top_n:
+            rerank_candidates = sorted(results, key=lambda r: r.score, reverse=True)[:20]  # Top 20 for reranking
+            passages = [r.text for r in rerank_candidates]
+            rerank_scores = self.reranker.rerank(query, passages)
+            # Create new SearchResult with reranked scores
+            reranked_results = []
+            for i, r in enumerate(rerank_candidates):
+                reranked_results.append(SearchResult(
+                    chunk_id=r.chunk_id,
+                    document_id=r.document_id,
+                    source=r.source,
+                    title=r.title,
+                    url=r.url,
+                    external_id=r.external_id,
+                    chunk_index=r.chunk_index,
+                    text=r.text,
+                    score=rerank_scores[i],
+                    semantic_score=r.semantic_score,
+                    lexical_score=r.lexical_score,
+                ))
+            # Replace top candidates with reranked ones
+            results = reranked_results + [r for r in results if r not in rerank_candidates]
 
         results.sort(key=lambda result: result.score, reverse=True)
         return results[:top_n]
