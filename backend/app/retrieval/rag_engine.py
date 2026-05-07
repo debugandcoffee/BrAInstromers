@@ -1,5 +1,5 @@
 from openai import OpenAI
-from app.retrieval.search import Retriever
+from app.retrieval.search import Retriever, SearchResult
 
 client = OpenAI()
 
@@ -8,10 +8,12 @@ class RAGEngine:
     def __init__(self, retriever: Retriever):
         self.retriever = retriever
 
-    def build_prompt(self, query, results):
+    def build_prompt(self, user_type: str, query: str, results: list[SearchResult]):
         context = "\n\n".join(
             f"{r.title}\n{r.text[:400]}" for r in results
         )
+
+        user_type = {'R': 'Researcher', 'I': 'Investor', 'C': 'Company'}.get(user_type, 'Unknown')
 
         return f"""
             You are a STRICT retrieval-based AI assistant.
@@ -25,7 +27,9 @@ class RAGEngine:
             - If context is weak or irrelevant, refuse.
 
             TASK:
-            Answer the user query using only the context.
+            Answer the user query using only the context. Try to connect users of different classes (investors / companies / researchers)
+
+            USER IS: {user_type}
 
             USER QUERY:
             {query}
@@ -39,7 +43,7 @@ class RAGEngine:
             - short justification based ONLY on context
             """.strip()
 
-    def query(self, user_query: str):
+    def query(self, user_query: str, user_type: str):
         results = self.retriever.hybrid(user_query, top_n=8)
 
         if not results:
@@ -57,7 +61,7 @@ class RAGEngine:
                 "confidence": float(top_score)
             }
 
-        prompt = self.build_prompt(user_query, results)
+        prompt = self.build_prompt(user_type, user_query, results)
 
         response = client.chat.completions.create(
             model="gpt-4o-mini",
