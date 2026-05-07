@@ -13,9 +13,11 @@ function generateId(): string {
   return `msg_${messageCounter}_${Date.now()}`;
 }
 
-async function getResponse(message: string) {
+async function getResponse(message: string, persona: string = "general") {
   const res = await fetch(
-    "http://localhost:8000/search?q=" + encodeURIComponent(message)
+    "http://localhost:8000/search?q=" +
+      encodeURIComponent(message) +
+      `&persona=${encodeURIComponent(persona)}`
   );
 
   if (!res.ok) {
@@ -56,7 +58,7 @@ export default function Home() {
     setIsTyping(true);
 
     try {
-      const data = await getResponse(text);
+      const data = await getResponse(text, currentPersona ?? "general");
 
       const assistantMessage: Message = {
         id: generateId(),
