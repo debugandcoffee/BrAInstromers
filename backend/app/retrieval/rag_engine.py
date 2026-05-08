@@ -92,7 +92,7 @@ class RAGEngine:
         5. Risks
         6. Why top entities matter for this opportunity"""
 
-        elif persona == "company":
+        elif persona == "business":
             task = """FIRST extract and rank implementation-relevant entities:
         - researchers
         - companies / vendors
