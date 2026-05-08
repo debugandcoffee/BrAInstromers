@@ -42,7 +42,8 @@ docker compose up --build
 ```
 
 **Potential errors** 
-To avoid error remove folder `data` or comment line 4 in entrypoint.sh `bash ingestion.sh` before starting docker multiple times.
+To avoid error remove folder `data` in folder `backend` or comment line 4 in entrypoint.sh `bash ingestion.sh` before starting docker multiple times.
 ```
+cd backend
 rm -rf data
 ```
