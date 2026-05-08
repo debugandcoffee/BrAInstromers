@@ -7,6 +7,7 @@ from app.retrieval.search import Retriever
 from app.retrieval.rag_engine import RAGEngine
 from app.agents.rag_agent import AgenticRAG
 from app.config import settings
+from app.retrieval.indexer import run_indexing
 
 router = APIRouter()
 
@@ -42,14 +43,17 @@ _init_lock = Lock()
 def get_rag():
     global _store, _retriever, _rag_engine
 
-    with _init_lock:
-        try:
-            _store = DocumentStore(settings.document_db_path)
-            _retriever = EnhancedRetriever(_store, use_kg=True)
-            _rag_engine = RAGEngine(_retriever)
+    if _store is None:
+        with _init_lock:
+            try:
+                if _store is None:
+                    _store = DocumentStore(settings.document_db_path)
+                    _retriever = EnhancedRetriever(_store, use_kg=True)
+                    _rag_engine = RAGEngine(_retriever)
+                    run_indexing(_store)
 
-        except Exception as e:
-            raise RuntimeError(f"RAG system initialization failed: {e}")
+            except Exception as e:
+                raise RuntimeError(f"RAG system initialization failed: {e}")
 
     return _rag_engine
 

@@ -100,7 +100,7 @@ class RAGEngine:
             }}"""
 
     def query(self, user_query: str, persona: str = "general"):
-        results = self.retriever.hybrid_with_kg(user_query, top_n=8)
+        results = self.retriever.hybrid_with_kg(user_query, top_n=10)
         # results = self.retriever.hybrid(user_query, top_n=8)
 
         if not results:
@@ -111,7 +111,7 @@ class RAGEngine:
 
         top_score = max((r.score for r in results), default=0.0)
 
-        if top_score < 0.25:
+        if False: #top_score < 0.25:
             return {
                 "answer": "I couldn't find an answer based on the available data.",
                 "sources": [r.to_dict() for r in results],

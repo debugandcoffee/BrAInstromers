@@ -31,14 +31,25 @@ class EnhancedRetriever(Retriever):
         enable_diversity: bool = True,
     ) -> list[SearchResult]:
         if not self.kg:
-            return self.hybrid(query, top_n, candidate_n, semantic_weight, lexical_weight)
+            ret = self.hybrid(query, top_n, candidate_n, semantic_weight, lexical_weight)
+            #print("NKG:")
+            #print(ret)
+            return ret
 
         results = self.hybrid(query, top_n, candidate_n, semantic_weight, lexical_weight)
         analysis = self.kg.analyze_query(query)
+        #print("Res+An:")
+        #print(results)
+        #print(analysis)
 
         results = self._apply_kg_ranking(results, analysis)
+        #print("Results:")
+        #print(results)
 
-        return self._diversify(results, top_n) if enable_diversity else results[:top_n]
+        ret = self._diversify(results, top_n) if enable_diversity else results[:top_n]
+        #print("KG:")
+        #print(ret)
+        return ret
 
     def semantic_with_kg(
         self,

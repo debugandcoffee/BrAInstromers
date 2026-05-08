@@ -16,11 +16,11 @@ class ArxivAdapter(SourceAdapter):
     source = "arxiv"
     base_url = "https://export.arxiv.org/api/query"
 
-    def fetch(self, query: str, limit: int = 10) -> list[RawDocument]:
+    def fetch(self, query: str, limit: int = 1000) -> list[RawDocument]:
         params = {
             "search_query": query if ":" in query else f"all:{query}",
             "start": 0,
-            "max_results": min(limit, 100),
+            "max_results": limit,
             "sortBy": "lastUpdatedDate",
             "sortOrder": "descending",
         }

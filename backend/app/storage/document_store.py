@@ -73,12 +73,14 @@ CREATE TABLE IF NOT EXISTS ingestion_runs (
 
 class DocumentStore:
     def __init__(self, db_path: Path):
-      self.db_path = db_path
-      self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        self.db_path = db_path
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        #sqlite3.enable_callback_tracebacks(True)
 
     @contextmanager
     def connect(self) -> Iterator[sqlite3.Connection]:
         connection = sqlite3.connect(self.db_path)
+        #connection.set_trace_callback(print)
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA foreign_keys = ON")
         try:
@@ -304,15 +306,15 @@ class DocumentStore:
             FROM chunk_embeddings
             JOIN chunks ON chunks.id = chunk_embeddings.chunk_id
             JOIN documents ON documents.id = chunks.document_id
-            WHERE chunk_embeddings.model = ?
             ORDER BY chunks.id
         """
-        params: tuple = (model,)
+        params: tuple = tuple()
         if limit:
             sql += " LIMIT ?"
-            params = (model, limit)
+            params = (limit)
         with self.connect() as connection:
             rows = connection.execute(sql, params).fetchall()
+        #print(f'{rows=}')
         return [dict(row) for row in rows]
 
     def lexical_search(self, query: str, limit: int = 30) -> list[dict]:
@@ -341,7 +343,10 @@ class DocumentStore:
     def rebuild_fts(self) -> int:
         self.init_db()
         with self.connect() as connection:
-            connection.execute("DELETE FROM chunk_fts")
+            try: 
+                connection.execute("DELETE FROM chunk_fts")
+            except Exception:
+                pass
             rows = connection.execute(
                 """
                 SELECT chunks.id, chunks.text, documents.title, documents.source

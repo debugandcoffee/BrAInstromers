@@ -97,6 +97,17 @@ class Retriever:
 
         semantic_norm = normalize_scores({chunk_id: semantic_scores[chunk_id] for chunk_id in top_semantic_ids})
         candidate_ids = set(top_semantic_ids) | set(lexical_scores)
+
+        #print(f'{self.store.semantic_candidates(self.model_name)=}')
+        #print(f'{self.model_name=}')
+        #print(f'{lexical_rows=}')
+        #print(f'{semantic_scores=}')
+        #print(f'{semantic_norm=}')
+
+        #print(top_semantic_ids)
+        #print(lexical_scores)
+        #print(candidate_ids)
+
         results: list[SearchResult] = []
         for chunk_id in candidate_ids:
             row = row_by_id[chunk_id]
@@ -111,6 +122,8 @@ class Retriever:
                     lexical_score=lexical_score,
                 )
             )
+        #print("Res1:")
+        #print(results)
 
         # Rerank top candidates
         if len(results) > top_n:
@@ -135,6 +148,9 @@ class Retriever:
                 ))
             # Replace top candidates with reranked ones
             results = reranked_results + [r for r in results if r not in rerank_candidates]
+
+        #print("Res2:")
+        #print(results)
 
         results.sort(key=lambda result: result.score, reverse=True)
         return results[:top_n]
