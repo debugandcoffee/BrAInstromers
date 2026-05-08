@@ -57,7 +57,7 @@ class RAGEngine:
     #         - short justification based ONLY on context
     #         """.strip()
     
-    def build_prompt(self, query, results):
+    def build_prompt(self, query, results, persona: str = "general"):
         by_source = {}
         for r in results:
             if r.source not in by_source:
@@ -72,32 +72,91 @@ class RAGEngine:
             f"[{r.source}] {r.title}\n{r.text[:400]}" for r in diverse_results
         )
         
-        return f"""You are a business matchmaker connecting research with companies.
+        if persona == "investor":
+            task = """FIRST extract and rank relevant entities from the context:
+        - companies / startups
+        - technologies
+        - research groups
+        - key people
+
+        FOR EACH ENTITY:
+        - provide name
+        - provide source-based justification
+        - provide link if available in context (URL, paper, dataset, or mention source reference)
+
+        THEN analyze market opportunity:
+        1. Market size and growth
+        2. Competitive advantage
+        3. Monetization potential
+        4. Investment attractiveness
+        5. Risks
+        6. Why top entities matter for this opportunity"""
+
+        elif persona == "company":
+            task = """FIRST extract and rank implementation-relevant entities:
+        - researchers
+        - companies / vendors
+        - technologies
+        - methods / tools
+
+        FOR EACH ENTITY:
+        - explain relevance to the problem
+        - include link/source reference if available in context
+        - show how it can be contacted or used (if implied by sources)
+
+        THEN analyze:
+        1. Technical feasibility
+        2. ROI / business value
+        3. Integration complexity
+        4. Deployment timeline
+        5. Recommended collaborators with justification and links"""
+
+        elif persona == "researcher":
+            task = """FIRST extract and rank commercialization-relevant entities:
+        - companies
+        - industries
+        - investors
+        - applied technologies
+
+        FOR EACH ENTITY:
+        - explain why it is relevant
+        - include link/source reference if available in context
+        - identify real-world connection to research
+
+        THEN translate research into:
+        1. Commercial applications
+        2. Industry use cases
+        3. Potential partners or funders (with links)
+        4. Collaboration opportunities
+        5. Funding pathways"""
+
+        else:
+            task = """FIRST extract all relevant entities:
+        - companies
+        - researchers
+        - investors
+        - technologies
+
+        FOR EACH ENTITY:
+        - rank relevance
+        - justify using context
+        - include link/source reference if available
+
+        THEN:
+        1. Build entity relationship map
+        2. Explain connections between entities
+        3. Provide structured answer grounded ONLY in sources"""
         
-            ANALYZE the query and results to identify:
-            1. If this is a company problem, researcher, or research idea
-            2. Which entities (researchers/companies/investors) match best
-            3. HOW each match solves the problem (business value translation)
+        return f"""You are analyzing this from a {persona} perspective.
 
-            QUERY: {query}
+                {task}
 
-            RESULTS:
-            {context}
+                QUERY: {query}
 
-            OUTPUT JSON:
-            {{
-                "entity_type": "company_problem|researcher_profile|research_idea",
-                "extracted": {{"description": "...", "key_needs": [...]}},
-                "matches": [
-                    {{
-                        "name": "...",
-                        "type": "researcher|company|investor",
-                        "score": 0.85,
-                        "why": "How they solve this in business terms",
-                        "next_step": "Specific action"
-                    }}
-                ]
-            }}"""
+                SOURCES:
+                {context}
+
+                Provide structured analysis based ONLY on the context above.""".strip()
 
     def query(self, user_query: str, persona: str = "general"):
         results = self.retriever.hybrid_with_kg(user_query, top_n=10)
@@ -111,14 +170,14 @@ class RAGEngine:
 
         top_score = max((r.score for r in results), default=0.0)
 
-        if False: #top_score < 0.25:
-            return {
-                "answer": "I couldn't find an answer based on the available data.",
-                "sources": [r.to_dict() for r in results],
-                "confidence": float(top_score)
-            }
+        # if top_score < 0.25:
+        #     return {
+        #         "answer": "I couldn't find an answer based on the available data.",
+        #         "sources": [r.to_dict() for r in results],
+        #         "confidence": float(top_score)
+        #     }
 
-        prompt = self.build_prompt(user_type, user_query, results)
+        prompt = self.build_prompt(user_query, results, persona=persona)
 
         response = client.chat.completions.create(
             model="llama-3.1-8b-instant",
