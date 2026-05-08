@@ -39,3 +39,10 @@ nano backend/.env
 docker compose up --build
 
 # Open http://localhost:8080
+```
+
+**Potential errors** 
+To avoid error remove folder `data` or comment line 4 in entrypoint.sh `bash ingestion.sh` before starting docker multiple times.
+```
+rm -rf data
+```
