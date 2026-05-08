@@ -157,7 +157,8 @@ export default function ChatArea({
               fontSize: 11,
             }}
           >
-            AI can make mistakes. Verify important information independently.
+            Despite low hallucination risk AI can still make mistakes. Verify
+            important information independently.
           </p>
         </form>
       </div>
