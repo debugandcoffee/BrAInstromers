@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useRef } from "react";
 import { Menu } from "lucide-react";
 import Sidebar from "./components/Sidebar";
 import ChatArea from "./components/ChatArea";
@@ -7,6 +7,8 @@ import { PERSONAS } from "@/mocks/chatResponses";
 import type { Message } from "./components/ChatArea";
 
 let messageCounter = 0;
+
+export type ApiPersona = "general" | "investor" | "researcher" | "business";
 
 function generateId(): string {
   messageCounter += 1;
@@ -33,6 +35,7 @@ export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [currentPersona, setCurrentPersona] = useState<PersonaId | null>(null);
+  const personaRef = useRef<PersonaId | null>(null);
 
   const persona = useMemo(
     () => PERSONAS.find((item) => item.id === currentPersona) ?? null,
@@ -58,7 +61,7 @@ export default function Home() {
     setIsTyping(true);
 
     try {
-      const data = await getResponse(text, currentPersona ?? "general");
+      const data = await getResponse(text, personaRef.current ?? "general");
 
       const assistantMessage: Message = {
         id: generateId(),
@@ -83,6 +86,7 @@ export default function Home() {
   }, []);
 
   const handleSelectPersona = useCallback((personaId: PersonaId) => {
+    personaRef.current = personaId;
     setCurrentPersona(personaId);
     const selectedPersona = PERSONAS.find((p) => p.id === personaId);
     if (!selectedPersona) return;
@@ -95,7 +99,6 @@ export default function Home() {
       content: greeting,
       timestamp: new Date(),
     };
-
     setMessages([assistantMessage]);
   }, []);
 
@@ -122,7 +125,6 @@ export default function Home() {
           <img className="brand-logo" src="/logo.png" alt="NexusBridge" />
           <strong>NexusBridge</strong>
         </div>
-
         <ChatArea
           messages={messages}
           isTyping={isTyping}
