@@ -1,10 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "Initializing database..."
-python -m app.cli init-db
-
-#bash ingestion.sh
+bash ingestion.sh
 
 echo "Running stats..."
 python -m app.cli stats || true
